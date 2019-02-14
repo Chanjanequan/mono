@@ -35,7 +35,7 @@ my $existingMonoRootPath = '';
 my $arch32 = 0;
 my $winPerl = "perl";
 my $winMonoRoot = $monoroot;
-my $msBuildVersion = "14.0";
+my $msBuildVersion = "15.0";
 my $buildDeps = "";
 my $stevedoreBuildDeps=1;
 

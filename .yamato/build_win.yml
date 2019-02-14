@@ -1,0 +1,19 @@
+name: build_win
+
+agent:
+  type: Unity::VM
+  image: platform-foundation/windows-mono-bokken:latest
+  flavor: b1.xlarge
+
+interpreter: powershell
+
+commands:
+  - git submodule update --init --recursive
+  - perl external/buildscripts/build_runtime_win64.pl --stevedorebuilddeps=1
+  - mkdir -p incomingbuilds\win64
+  - cp -r builds\* incomingbuilds\win64\
+
+artifacts: 
+  win64.zip:
+    paths:
+      - incomingbuilds\win64\**

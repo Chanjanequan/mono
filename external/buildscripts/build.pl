@@ -52,7 +52,7 @@ my $sdk = '';
 my $arch32 = 0;
 my $winPerl = "";
 my $winMonoRoot = "";
-my $msBuildVersion = "14.0";
+my $msBuildVersion = "15.0";
 my $buildDeps = "";
 my $android=0;
 my $androidArch = "";
@@ -1161,10 +1161,21 @@ if ($build)
 			else
 			{
 				print(">>> Linux SDK needs to be extracted\n");
-				system('mkdir', '-p', $depsSdkFinal);
-				system('tar', 'xaf', $depsSdkArchive, '-C', $depsSdkFinal) eq 0  or die ("failed to extract Linux SDK\n");
-				system('sudo', 'cp', '-R', "$depsSdkFinal/linux-sdk-$sdkVersion", '/etc/schroot');
-				system("sed 's,^directory=.*,directory=$depsSdkFinal/$schroot,' \"$depsSdkFinal/$schroot.conf\" | sudo tee /etc/schroot/chroot.d/$schroot.conf") eq 0 or die ("failed to deploy Linux SDK\n");
+				system('mkdir', '-p', $depsSdkFinal) eq 0 or die ("failed to create directory $depsSdkFinal\n");
+				system('tar', 'xaf', $depsSdkArchive, '-C', $depsSdkFinal) eq 0 or die ("failed to extract Linux SDK\n");
+				system('sudo', 'cp', '-R', "$depsSdkFinal/linux-sdk-$sdkVersion", '/etc/schroot') eq 0 or die ("failed to copy SDK\n");
+				
+				print(">>> Contents of /etc/schroot\n");
+				system('sudo', 'ls', '/etc/schroot') eq 0 or die ("failed to list contents on /etc/schroot\n");
+				
+				#system("sed 's,^directory=.*,directory=$depsSdkFinal/$schroot,' \"$depsSdkFinal/$schroot.conf\" | sudo tee /etc/schroot/chroot.d/$schroot.conf") eq 0 or die ("failed to deploy Linux SDK\n");
+				system('sudo', 'cp', "$buildscriptsdir/LinuxBuildEnvironment-20170609.conf", '/etc/schroot/chroot.d/') eq 0 or die ("failed to copy conf file\n");
+				
+				print(">>> Contents of /etc/schroot/chroot.d\n");
+				system('sudo', 'ls', '/etc/schroot/chroot.d') eq 0 or die ("failed to list contents on /etc/schroot/chroot.d\n");
+				
+				print(">>> File contents: $schroot.conf\n");
+				system('sudo', 'cat', '/etc/schroot/chroot.d/LinuxBuildEnvironment-20170609.conf') eq 0 or die ("failed to list contents on /etc/schroot/chroot.d\n");
 			}
 
 			@commandPrefix = @linuxToolchain;
