@@ -2,7 +2,7 @@ name: build_linux_x86
 
 agent:
   type: Unity::VM
-  image: cds-ops/ubuntu-18.04-agent:v1.0.11-765607
+  image: platform-foundation/linux-bokken:v0.1.2-225800
   flavor: b1.large
 
 commands:
