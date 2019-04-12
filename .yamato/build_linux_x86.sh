@@ -5,7 +5,7 @@ git submodule update --init --recursive
 cd external/buildscripts
 ./bee
 cd ../..
-perl external/buildscripts/build_runtime_linux.pl --stevedorebuilddeps=1
+perl external/buildscripts/build_runtime_linux.pl -build64=0 --stevedorebuilddeps=1
 echo "Making directory incomingbuilds/linux32"
 mkdir -p incomingbuilds/linux32
 ls -al incomingbuilds/linux32
